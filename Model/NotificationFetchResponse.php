@@ -1,6 +1,6 @@
 <?php
 /**
- * MediaPackageResponse
+ * NotificationFetchResponse
  *
  * PHP version 7.1.3
  *
@@ -34,15 +34,15 @@ use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class representing the MediaPackageResponse model.
+ * Class representing the NotificationFetchResponse model.
  *
  * @package OpenAPI\Server\Model
  * @author  OpenAPI Generator team
  */
-class MediaPackageResponse 
+class NotificationFetchResponse 
 {
         /**
-     * ID of the package
+     * Id of the notification
      *
      * @var int|null
      * @SerializedName("id")
@@ -52,34 +52,34 @@ class MediaPackageResponse
     protected $id;
 
     /**
-     * Name of the package
+     * Notification Type
      *
      * @var string|null
-     * @SerializedName("name")
+     * @SerializedName("type")
      * @Assert\Type("string")
      * @Type("string")
      */
-    protected $name;
+    protected $type;
 
     /**
-     * Absolute path to the package
+     * Seen status of the notification
      *
-     * @var string|null
-     * @SerializedName("url")
-     * @Assert\Type("string")
-     * @Type("string")
+     * @var bool|null
+     * @SerializedName("seen")
+     * @Assert\Type("bool")
+     * @Type("bool")
      */
-    protected $url;
+    protected $seen;
 
     /**
-     * @var array[]|null
-     * @SerializedName("categories")
+     * @var OpenAPI\Server\Model\NotificationContent[]|null
+     * @SerializedName("content")
      * @Assert\All({
-     *   @Assert\Type("OpenAPI\Server\Model\MediaCategoryResponse")
+     *   @Assert\Type("OpenAPI\Server\Model\NotificationContent")
      * })
-     * @Type("array<OpenAPI\Server\Model\MediaCategoryResponse>")
+     * @Type("array<OpenAPI\Server\Model\NotificationContent>")
      */
-    protected $categories;
+    protected $content;
 
     /**
      * Constructor
@@ -88,9 +88,9 @@ class MediaPackageResponse
     public function __construct(array $data = null)
     {
         $this->id = isset($data['id']) ? $data['id'] : null;
-        $this->name = isset($data['name']) ? $data['name'] : null;
-        $this->url = isset($data['url']) ? $data['url'] : null;
-        $this->categories = isset($data['categories']) ? $data['categories'] : null;
+        $this->type = isset($data['type']) ? $data['type'] : null;
+        $this->seen = isset($data['seen']) ? $data['seen'] : null;
+        $this->content = isset($data['content']) ? $data['content'] : null;
     }
 
     /**
@@ -106,7 +106,7 @@ class MediaPackageResponse
     /**
      * Sets id.
      *
-     * @param int|null $id  ID of the package
+     * @param int|null $id  Id of the notification
      *
      * @return $this
      */
@@ -118,73 +118,73 @@ class MediaPackageResponse
     }
 
     /**
-     * Gets name.
+     * Gets type.
      *
      * @return string|null
      */
-    public function getName(): ?string
+    public function getType(): ?string
     {
-        return $this->name;
+        return $this->type;
     }
 
     /**
-     * Sets name.
+     * Sets type.
      *
-     * @param string|null $name  Name of the package
+     * @param string|null $type  Notification Type
      *
      * @return $this
      */
-    public function setName(string $name = null)
+    public function setType(string $type = null)
     {
-        $this->name = $name;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Gets url.
+     * Gets seen.
      *
-     * @return string|null
+     * @return bool|null
      */
-    public function getUrl(): ?string
+    public function isSeen(): ?bool
     {
-        return $this->url;
+        return $this->seen;
     }
 
     /**
-     * Sets url.
+     * Sets seen.
      *
-     * @param string|null $url  Absolute path to the package
+     * @param bool|null $seen  Seen status of the notification
      *
      * @return $this
      */
-    public function setUrl(string $url = null)
+    public function setSeen(bool $seen = null)
     {
-        $this->url = $url;
+        $this->seen = $seen;
 
         return $this;
     }
 
     /**
-     * Gets categories.
+     * Gets content.
      *
-     * @return array[]|null
+     * @return OpenAPI\Server\Model\NotificationContent[]|null
      */
-    public function getCategories(): ?array
+    public function getContent(): ?array
     {
-        return $this->categories;
+        return $this->content;
     }
 
     /**
-     * Sets categories.
+     * Sets content.
      *
-     * @param array[]|null $categories
+     * @param OpenAPI\Server\Model\NotificationContent[]|null $content
      *
      * @return $this
      */
-    public function setCategories(array $categories = null)
+    public function setContent(array $content = null)
     {
-        $this->categories = $categories;
+        $this->content = $content;
 
         return $this;
     }

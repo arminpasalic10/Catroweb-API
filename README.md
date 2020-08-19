@@ -124,6 +124,10 @@ Class | Method | HTTP request | Description
 *MediaLibraryApiInterface* | [**mediaFilesGet**](Resources/docs/Api/MediaLibraryApiInterface.md#mediafilesget) | **GET** /media/files | Get *all* content of the media library.
 *MediaLibraryApiInterface* | [**mediaFilesSearchGet**](Resources/docs/Api/MediaLibraryApiInterface.md#mediafilessearchget) | **GET** /media/files/search | Search for mediafiles associated with keywords
 *MediaLibraryApiInterface* | [**mediaPackageNameGet**](Resources/docs/Api/MediaLibraryApiInterface.md#mediapackagenameget) | **GET** /media/package/{name} | Get media-library asstes of a named package
+*NotificationsApiInterface* | [**notificationsCountGet**](Resources/docs/Api/NotificationsApiInterface.md#notificationscountget) | **GET** /notifications/count | Count the number of unseen notifications
+*NotificationsApiInterface* | [**notificationsGet**](Resources/docs/Api/NotificationsApiInterface.md#notificationsget) | **GET** /notifications | Get user notifications
+*NotificationsApiInterface* | [**notificationsMarkallPut**](Resources/docs/Api/NotificationsApiInterface.md#notificationsmarkallput) | **PUT** /notifications/markall | Mark all notifications as read
+*NotificationsApiInterface* | [**notificationsMarkasreadIdPut**](Resources/docs/Api/NotificationsApiInterface.md#notificationsmarkasreadidput) | **PUT** /notifications/markasread/{id} | Mark specified notification as read
 *ProjectsApiInterface* | [**projectIdGet**](Resources/docs/Api/ProjectsApiInterface.md#projectidget) | **GET** /project/{id} | Get the information of a project
 *ProjectsApiInterface* | [**projectsFeaturedGet**](Resources/docs/Api/ProjectsApiInterface.md#projectsfeaturedget) | **GET** /projects/featured | Get the currently featured projects
 *ProjectsApiInterface* | [**projectsGet**](Resources/docs/Api/ProjectsApiInterface.md#projectsget) | **GET** /projects | Get projects
@@ -152,6 +156,9 @@ Class | Method | HTTP request | Description
  - [MediaCategoryResponse](Resources/docs/Model/MediaCategoryResponse.md)
  - [MediaFileResponse](Resources/docs/Model/MediaFileResponse.md)
  - [MediaPackageResponse](Resources/docs/Model/MediaPackageResponse.md)
+ - [NotificationContent](Resources/docs/Model/NotificationContent.md)
+ - [NotificationFetchResponse](Resources/docs/Model/NotificationFetchResponse.md)
+ - [NotificationsCountResponse](Resources/docs/Model/NotificationsCountResponse.md)
  - [OAuthLoginRequest](Resources/docs/Model/OAuthLoginRequest.md)
  - [ProjectResponse](Resources/docs/Model/ProjectResponse.md)
  - [ProjectUploadRequest](Resources/docs/Model/ProjectUploadRequest.md)
