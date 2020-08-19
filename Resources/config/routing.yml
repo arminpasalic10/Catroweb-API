@@ -50,6 +50,33 @@ open_api_server_mediaLibrary_mediapackagenameget:
     requirements:
         name: '^[a-zA-Z0-9\\-_]+$'
 
+# notifications
+open_api_server_notifications_notificationscountget:
+    path:     /notifications/count
+    methods:  [GET]
+    defaults:
+        _controller: open_api_server.controller.notifications:notificationsCountGetAction
+
+open_api_server_notifications_notificationsget:
+    path:     /notifications
+    methods:  [GET]
+    defaults:
+        _controller: open_api_server.controller.notifications:notificationsGetAction
+
+open_api_server_notifications_notificationsmarkallput:
+    path:     /notifications/markall
+    methods:  [PUT]
+    defaults:
+        _controller: open_api_server.controller.notifications:notificationsMarkallPutAction
+
+open_api_server_notifications_notificationsmarkasreadidput:
+    path:     /notifications/markasread/{id}
+    methods:  [PUT]
+    defaults:
+        _controller: open_api_server.controller.notifications:notificationsMarkasreadIdPutAction
+    requirements:
+        id: '\d+'
+
 # projects
 open_api_server_projects_projectidget:
     path:     /project/{id}

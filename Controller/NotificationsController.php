@@ -1,7 +1,7 @@
 <?php
 
 /**
- * MediaLibraryController
+ * NotificationsController
  * PHP version 7.1.3
  *
  * @category Class
@@ -35,29 +35,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
-use OpenAPI\Server\Api\MediaLibraryApiInterface;
-use OpenAPI\Server\Model\MediaFileResponse;
+use OpenAPI\Server\Api\NotificationsApiInterface;
+use OpenAPI\Server\Model\NotificationFetchResponse;
+use OpenAPI\Server\Model\NotificationsCountResponse;
 
 /**
- * MediaLibraryController Class Doc Comment
+ * NotificationsController Class Doc Comment
  *
  * @category Class
  * @package  OpenAPI\Server\Controller
  * @author   OpenAPI Generator team
  * @link     https://github.com/openapitools/openapi-generator
  */
-class MediaLibraryController extends Controller
+class NotificationsController extends Controller
 {
 
     /**
-     * Operation mediaFileIdGet
+     * Operation notificationsCountGet
      *
-     * Get the information of a specific media file
+     * Count the number of unseen notifications
      *
      * @param Request $request The Symfony request to handle.
      * @return Response The Symfony response.
      */
-    public function mediaFileIdGetAction(Request $request, $id)
+    public function notificationsCountGetAction(Request $request)
     {
         // Figure out what data format to return to the client
         $produces = ['application/json'];
@@ -69,6 +70,241 @@ class MediaLibraryController extends Controller
         }
 
         // Handle authentication
+        // Authentication 'PandaAuth' required
+        // HTTP basic authentication required
+        $securityPandaAuth = $request->headers->get('authorization');
+
+        // Read out all input parameter values into variables
+
+        // Use the default value if no value was provided
+
+        // Validate the input values
+
+
+        try {
+            $handler = $this->getApiHandler();
+
+            // Set authentication method 'PandaAuth'
+            $handler->setPandaAuth($securityPandaAuth);
+            
+            // Make the call to the business logic
+            $responseCode = 200;
+            $responseHeaders = [];
+            $result = $handler->notificationsCountGet($responseCode, $responseHeaders);
+
+            // Find default response message
+            $message = '';
+
+            // Find a more specific message, if available
+            switch ($responseCode) {
+                case 200:
+                    $message = 'OK';
+                    break;
+                case 401:
+                    $message = 'Invalid JWT token | JWT token not found | JWT token expired';
+                    break;
+            }
+
+            return new Response(
+                $result !== null ?$this->serialize($result, $responseFormat):'',
+                $responseCode,
+                array_merge(
+                    $responseHeaders,
+                    [
+                        'Content-Type' => $responseFormat,
+                        'X-OpenAPI-Message' => $message
+                    ]
+                )
+            );
+        } catch (Exception $fallthrough) {
+            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
+        }
+    }
+
+    /**
+     * Operation notificationsGet
+     *
+     * Get user notifications
+     *
+     * @param Request $request The Symfony request to handle.
+     * @return Response The Symfony response.
+     */
+    public function notificationsGetAction(Request $request)
+    {
+        // Figure out what data format to return to the client
+        $produces = ['application/json'];
+        // Figure out what the client accepts
+        $clientAccepts = $request->headers->has('Accept')?$request->headers->get('Accept'):'*/*';
+        $responseFormat = $this->getOutputFormat($clientAccepts, $produces);
+        if ($responseFormat === null) {
+            return new Response('', 406);
+        }
+
+        // Handle authentication
+        // Authentication 'PandaAuth' required
+        // HTTP basic authentication required
+        $securityPandaAuth = $request->headers->get('authorization');
+
+        // Read out all input parameter values into variables
+        $limit = $request->query->get('limit');
+        $offset = $request->query->get('offset');
+        $type = $request->query->get('type');
+
+        // Use the default value if no value was provided
+
+        // Deserialize the input values that needs it
+        try {
+            $limit = $this->deserialize($limit, 'int', 'string');
+            $offset = $this->deserialize($offset, 'int', 'string');
+            $type = $this->deserialize($type, 'string', 'string');
+        } catch (SerializerRuntimeException $exception) {
+            return $this->createBadRequestResponse($exception->getMessage());
+        }
+
+        // Validate the input values
+        $asserts = [];
+        $asserts[] = new Assert\Type("int");
+        $asserts[] = new Assert\GreaterThanOrEqual(0);
+        $response = $this->validate($limit, $asserts);
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $asserts = [];
+        $asserts[] = new Assert\Type("int");
+        $asserts[] = new Assert\GreaterThanOrEqual(0);
+        $response = $this->validate($offset, $asserts);
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $asserts = [];
+        $asserts[] = new Assert\Type("string");
+        $response = $this->validate($type, $asserts);
+        if ($response instanceof Response) {
+            return $response;
+        }
+
+
+        try {
+            $handler = $this->getApiHandler();
+
+            // Set authentication method 'PandaAuth'
+            $handler->setPandaAuth($securityPandaAuth);
+            
+            // Make the call to the business logic
+            $responseCode = 200;
+            $responseHeaders = [];
+            $result = $handler->notificationsGet($limit, $offset, $type, $responseCode, $responseHeaders);
+
+            // Find default response message
+            $message = '';
+
+            // Find a more specific message, if available
+            switch ($responseCode) {
+                case 200:
+                    $message = 'OK';
+                    break;
+                case 400:
+                    $message = 'Bad request (Invalid, or missing parameters)';
+                    break;
+                case 401:
+                    $message = 'Invalid JWT token | JWT token not found | JWT token expired';
+                    break;
+            }
+
+            return new Response(
+                $result !== null ?$this->serialize($result, $responseFormat):'',
+                $responseCode,
+                array_merge(
+                    $responseHeaders,
+                    [
+                        'Content-Type' => $responseFormat,
+                        'X-OpenAPI-Message' => $message
+                    ]
+                )
+            );
+        } catch (Exception $fallthrough) {
+            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
+        }
+    }
+
+    /**
+     * Operation notificationsMarkallPut
+     *
+     * Mark all notifications as read
+     *
+     * @param Request $request The Symfony request to handle.
+     * @return Response The Symfony response.
+     */
+    public function notificationsMarkallPutAction(Request $request)
+    {
+        // Handle authentication
+        // Authentication 'PandaAuth' required
+        // HTTP basic authentication required
+        $securityPandaAuth = $request->headers->get('authorization');
+
+        // Read out all input parameter values into variables
+
+        // Use the default value if no value was provided
+
+        // Validate the input values
+
+
+        try {
+            $handler = $this->getApiHandler();
+
+            // Set authentication method 'PandaAuth'
+            $handler->setPandaAuth($securityPandaAuth);
+            
+            // Make the call to the business logic
+            $responseCode = 204;
+            $responseHeaders = [];
+            $result = $handler->notificationsMarkallPut($responseCode, $responseHeaders);
+
+            // Find default response message
+            $message = '';
+
+            // Find a more specific message, if available
+            switch ($responseCode) {
+                case 204:
+                    $message = 'No Content';
+                    break;
+                case 401:
+                    $message = 'Invalid JWT token | JWT token not found | JWT token expired';
+                    break;
+                case 404:
+                    $message = 'Not found';
+                    break;
+            }
+
+            return new Response(
+                '',
+                $responseCode,
+                array_merge(
+                    $responseHeaders,
+                    [
+                        'X-OpenAPI-Message' => $message
+                    ]
+                )
+            );
+        } catch (Exception $fallthrough) {
+            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
+        }
+    }
+
+    /**
+     * Operation notificationsMarkasreadIdPut
+     *
+     * Mark specified notification as read
+     *
+     * @param Request $request The Symfony request to handle.
+     * @return Response The Symfony response.
+     */
+    public function notificationsMarkasreadIdPutAction(Request $request, $id)
+    {
+        // Handle authentication
+        // Authentication 'PandaAuth' required
+        // HTTP basic authentication required
+        $securityPandaAuth = $request->headers->get('authorization');
 
         // Read out all input parameter values into variables
 
@@ -85,6 +321,7 @@ class MediaLibraryController extends Controller
         $asserts = [];
         $asserts[] = new Assert\NotNull();
         $asserts[] = new Assert\Type("int");
+        $asserts[] = new Assert\GreaterThanOrEqual(0);
         $response = $this->validate($id, $asserts);
         if ($response instanceof Response) {
             return $response;
@@ -94,362 +331,36 @@ class MediaLibraryController extends Controller
         try {
             $handler = $this->getApiHandler();
 
+            // Set authentication method 'PandaAuth'
+            $handler->setPandaAuth($securityPandaAuth);
             
             // Make the call to the business logic
-            $responseCode = 200;
+            $responseCode = 204;
             $responseHeaders = [];
-            $result = $handler->mediaFileIdGet($id, $responseCode, $responseHeaders);
+            $result = $handler->notificationsMarkasreadIdPut($id, $responseCode, $responseHeaders);
 
             // Find default response message
             $message = '';
 
             // Find a more specific message, if available
             switch ($responseCode) {
-                case 200:
-                    $message = 'OK';
+                case 204:
+                    $message = 'No Content';
                     break;
-                case 400:
-                    $message = 'Bad request (Invalid, or missing parameters)';
+                case 401:
+                    $message = 'Invalid JWT token | JWT token not found | JWT token expired';
                     break;
                 case 404:
                     $message = 'Not found';
                     break;
-                case 406:
-                    $message = 'Not acceptable - client must accept application/json as content type';
-                    break;
             }
 
             return new Response(
-                $result !== null ?$this->serialize($result, $responseFormat):'',
+                '',
                 $responseCode,
                 array_merge(
                     $responseHeaders,
                     [
-                        'Content-Type' => $responseFormat,
-                        'X-OpenAPI-Message' => $message
-                    ]
-                )
-            );
-        } catch (Exception $fallthrough) {
-            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
-        }
-    }
-
-    /**
-     * Operation mediaFilesGet
-     *
-     * Get *all* content of the media library.
-     *
-     * @param Request $request The Symfony request to handle.
-     * @return Response The Symfony response.
-     */
-    public function mediaFilesGetAction(Request $request)
-    {
-        // Figure out what data format to return to the client
-        $produces = ['application/json'];
-        // Figure out what the client accepts
-        $clientAccepts = $request->headers->has('Accept')?$request->headers->get('Accept'):'*/*';
-        $responseFormat = $this->getOutputFormat($clientAccepts, $produces);
-        if ($responseFormat === null) {
-            return new Response('', 406);
-        }
-
-        // Handle authentication
-
-        // Read out all input parameter values into variables
-        $limit = $request->query->get('limit');
-        $offset = $request->query->get('offset');
-        $flavor = $request->query->get('flavor');
-
-        // Use the default value if no value was provided
-
-        // Deserialize the input values that needs it
-        try {
-            $limit = $this->deserialize($limit, 'int', 'string');
-            $offset = $this->deserialize($offset, 'int', 'string');
-            $flavor = $this->deserialize($flavor, 'string', 'string');
-        } catch (SerializerRuntimeException $exception) {
-            return $this->createBadRequestResponse($exception->getMessage());
-        }
-
-        // Validate the input values
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($limit, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($offset, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("string");
-        $response = $this->validate($flavor, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-
-
-        try {
-            $handler = $this->getApiHandler();
-
-            
-            // Make the call to the business logic
-            $responseCode = 200;
-            $responseHeaders = [];
-            $result = $handler->mediaFilesGet($limit, $offset, $flavor, $responseCode, $responseHeaders);
-
-            // Find default response message
-            $message = '';
-
-            // Find a more specific message, if available
-            switch ($responseCode) {
-                case 200:
-                    $message = 'OK';
-                    break;
-                case 400:
-                    $message = 'Bad request (Invalid, or missing parameters)';
-                    break;
-                case 406:
-                    $message = 'Not acceptable - client must accept application/json as content type';
-                    break;
-            }
-
-            return new Response(
-                $result !== null ?$this->serialize($result, $responseFormat):'',
-                $responseCode,
-                array_merge(
-                    $responseHeaders,
-                    [
-                        'Content-Type' => $responseFormat,
-                        'X-OpenAPI-Message' => $message
-                    ]
-                )
-            );
-        } catch (Exception $fallthrough) {
-            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
-        }
-    }
-
-    /**
-     * Operation mediaFilesSearchGet
-     *
-     * Search for mediafiles associated with keywords
-     *
-     * @param Request $request The Symfony request to handle.
-     * @return Response The Symfony response.
-     */
-    public function mediaFilesSearchGetAction(Request $request)
-    {
-        // Figure out what data format to return to the client
-        $produces = ['application/json'];
-        // Figure out what the client accepts
-        $clientAccepts = $request->headers->has('Accept')?$request->headers->get('Accept'):'*/*';
-        $responseFormat = $this->getOutputFormat($clientAccepts, $produces);
-        if ($responseFormat === null) {
-            return new Response('', 406);
-        }
-
-        // Handle authentication
-
-        // Read out all input parameter values into variables
-        $query = $request->query->get('query');
-        $flavor = $request->query->get('flavor');
-        $limit = $request->query->get('limit');
-        $offset = $request->query->get('offset');
-        $package_name = $request->query->get('package_name');
-
-        // Use the default value if no value was provided
-
-        // Deserialize the input values that needs it
-        try {
-            $query = $this->deserialize($query, 'string', 'string');
-            $flavor = $this->deserialize($flavor, 'string', 'string');
-            $limit = $this->deserialize($limit, 'int', 'string');
-            $offset = $this->deserialize($offset, 'int', 'string');
-            $package_name = $this->deserialize($package_name, 'string', 'string');
-        } catch (SerializerRuntimeException $exception) {
-            return $this->createBadRequestResponse($exception->getMessage());
-        }
-
-        // Validate the input values
-        $asserts = [];
-        $asserts[] = new Assert\NotNull();
-        $asserts[] = new Assert\Type("string");
-        $response = $this->validate($query, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("string");
-        $response = $this->validate($flavor, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($limit, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($offset, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("string");
-        $response = $this->validate($package_name, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-
-
-        try {
-            $handler = $this->getApiHandler();
-
-            
-            // Make the call to the business logic
-            $responseCode = 200;
-            $responseHeaders = [];
-            $result = $handler->mediaFilesSearchGet($query, $flavor, $limit, $offset, $package_name, $responseCode, $responseHeaders);
-
-            // Find default response message
-            $message = '';
-
-            // Find a more specific message, if available
-            switch ($responseCode) {
-                case 200:
-                    $message = 'OK';
-                    break;
-                case 400:
-                    $message = 'Bad request (Invalid, or missing parameters)';
-                    break;
-                case 406:
-                    $message = 'Not acceptable - client must accept application/json as content type';
-                    break;
-            }
-
-            return new Response(
-                $result !== null ?$this->serialize($result, $responseFormat):'',
-                $responseCode,
-                array_merge(
-                    $responseHeaders,
-                    [
-                        'Content-Type' => $responseFormat,
-                        'X-OpenAPI-Message' => $message
-                    ]
-                )
-            );
-        } catch (Exception $fallthrough) {
-            return $this->createErrorResponse(new HttpException(500, 'An unsuspected error occurred.', $fallthrough));
-        }
-    }
-
-    /**
-     * Operation mediaPackageNameGet
-     *
-     * Get media-library asstes of a named package
-     *
-     * @param Request $request The Symfony request to handle.
-     * @return Response The Symfony response.
-     */
-    public function mediaPackageNameGetAction(Request $request, $name)
-    {
-        // Figure out what data format to return to the client
-        $produces = ['application/json'];
-        // Figure out what the client accepts
-        $clientAccepts = $request->headers->has('Accept')?$request->headers->get('Accept'):'*/*';
-        $responseFormat = $this->getOutputFormat($clientAccepts, $produces);
-        if ($responseFormat === null) {
-            return new Response('', 406);
-        }
-
-        // Handle authentication
-
-        // Read out all input parameter values into variables
-        $limit = $request->query->get('limit');
-        $offset = $request->query->get('offset');
-
-        // Use the default value if no value was provided
-
-        // Deserialize the input values that needs it
-        try {
-            $name = $this->deserialize($name, 'string', 'string');
-            $limit = $this->deserialize($limit, 'int', 'string');
-            $offset = $this->deserialize($offset, 'int', 'string');
-        } catch (SerializerRuntimeException $exception) {
-            return $this->createBadRequestResponse($exception->getMessage());
-        }
-
-        // Validate the input values
-        $asserts = [];
-        $asserts[] = new Assert\NotNull();
-        $asserts[] = new Assert\Type("string");
-        $asserts[] = new Assert\Regex("/^[a-zA-Z0-9\\-_]+$/");
-        $response = $this->validate($name, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($limit, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-        $asserts = [];
-        $asserts[] = new Assert\Type("int");
-        $asserts[] = new Assert\GreaterThanOrEqual(0);
-        $response = $this->validate($offset, $asserts);
-        if ($response instanceof Response) {
-            return $response;
-        }
-
-
-        try {
-            $handler = $this->getApiHandler();
-
-            
-            // Make the call to the business logic
-            $responseCode = 200;
-            $responseHeaders = [];
-            $result = $handler->mediaPackageNameGet($name, $limit, $offset, $responseCode, $responseHeaders);
-
-            // Find default response message
-            $message = '';
-
-            // Find a more specific message, if available
-            switch ($responseCode) {
-                case 200:
-                    $message = 'OK';
-                    break;
-                case 400:
-                    $message = 'Bad request (Invalid, or missing parameters)';
-                    break;
-                case 404:
-                    $message = 'Not found';
-                    break;
-                case 406:
-                    $message = 'Not acceptable - client must accept application/json as content type';
-                    break;
-            }
-
-            return new Response(
-                $result !== null ?$this->serialize($result, $responseFormat):'',
-                $responseCode,
-                array_merge(
-                    $responseHeaders,
-                    [
-                        'Content-Type' => $responseFormat,
                         'X-OpenAPI-Message' => $message
                     ]
                 )
@@ -461,10 +372,10 @@ class MediaLibraryController extends Controller
 
     /**
      * Returns the handler for this API controller.
-     * @return MediaLibraryApiInterface
+     * @return NotificationsApiInterface
      */
     public function getApiHandler()
     {
-        return $this->apiServer->getApiHandler('mediaLibrary');
+        return $this->apiServer->getApiHandler('notifications');
     }
 }

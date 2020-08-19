@@ -1,6 +1,6 @@
 <?php
 /**
- * AuthenticationApiInterface
+ * NotificationsApiInterface
  * PHP version 7.1.3
  *
  * @category Class
@@ -29,19 +29,18 @@
 namespace OpenAPI\Server\Api;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use OpenAPI\Server\Model\JWTResponse;
-use OpenAPI\Server\Model\LoginRequest;
-use OpenAPI\Server\Model\OAuthLoginRequest;
+use OpenAPI\Server\Model\NotificationFetchResponse;
+use OpenAPI\Server\Model\NotificationsCountResponse;
 
 /**
- * AuthenticationApiInterface Interface Doc Comment
+ * NotificationsApiInterface Interface Doc Comment
  *
  * @category Interface
  * @package  OpenAPI\Server\Api
  * @author   OpenAPI Generator team
  * @link     https://github.com/openapitools/openapi-generator
  */
-interface AuthenticationApiInterface
+interface NotificationsApiInterface
 {
 
     /**
@@ -54,9 +53,38 @@ interface AuthenticationApiInterface
     public function setPandaAuth($value);
 
     /**
-     * Operation authenticationGet
+     * Operation notificationsCountGet
      *
-     * Check token
+     * Count the number of unseen notifications
+     *
+     * @param  integer $responseCode     The HTTP response code to return
+     * @param  array   $responseHeaders  Additional HTTP headers to return with the response ()
+     *
+     * @return OpenAPI\Server\Model\NotificationsCountResponse
+     *
+     */
+    public function notificationsCountGet(&$responseCode, array &$responseHeaders);
+
+    /**
+     * Operation notificationsGet
+     *
+     * Get user notifications
+     *
+     * @param  int $limit   (optional, default to 20)
+     * @param  int $offset   (optional, default to 0)
+     * @param  string $type   (optional)
+     * @param  integer $responseCode     The HTTP response code to return
+     * @param  array   $responseHeaders  Additional HTTP headers to return with the response ()
+     *
+     * @return OpenAPI\Server\Model\NotificationFetchResponse[]
+     *
+     */
+    public function notificationsGet(int $limit = 20, int $offset = 0, string $type = null, &$responseCode, array &$responseHeaders);
+
+    /**
+     * Operation notificationsMarkallPut
+     *
+     * Mark all notifications as read
      *
      * @param  integer $responseCode     The HTTP response code to return
      * @param  array   $responseHeaders  Additional HTTP headers to return with the response ()
@@ -64,33 +92,19 @@ interface AuthenticationApiInterface
      * @return void
      *
      */
-    public function authenticationGet(&$responseCode, array &$responseHeaders);
+    public function notificationsMarkallPut(&$responseCode, array &$responseHeaders);
 
     /**
-     * Operation authenticationOauthPost
+     * Operation notificationsMarkasreadIdPut
      *
-     * OAuth Login
+     * Mark specified notification as read
      *
-     * @param  OpenAPI\Server\Model\OAuthLoginRequest $o_auth_login_request   (required)
+     * @param  int $id   (required)
      * @param  integer $responseCode     The HTTP response code to return
      * @param  array   $responseHeaders  Additional HTTP headers to return with the response ()
      *
-     * @return OpenAPI\Server\Model\JWTResponse
+     * @return void
      *
      */
-    public function authenticationOauthPost(OAuthLoginRequest $o_auth_login_request, &$responseCode, array &$responseHeaders);
-
-    /**
-     * Operation authenticationPost
-     *
-     * Login
-     *
-     * @param  OpenAPI\Server\Model\LoginRequest $login_request   (required)
-     * @param  integer $responseCode     The HTTP response code to return
-     * @param  array   $responseHeaders  Additional HTTP headers to return with the response ()
-     *
-     * @return OpenAPI\Server\Model\JWTResponse
-     *
-     */
-    public function authenticationPost(LoginRequest $login_request, &$responseCode, array &$responseHeaders);
+    public function notificationsMarkasreadIdPut(int $id, &$responseCode, array &$responseHeaders);
 }
