@@ -134,7 +134,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 ## **projectsGet**
-> OpenAPI\Server\Model\ProjectResponse projectsGet($category, $accept_language, $max_version, $limit, $offset, $flavor)
+> OpenAPI\Server\Model\ProjectResponse projectsGet($category, $accept_language, $max_version, $limit, $offset, $flavor, $program_id)
 
 Get projects
 
@@ -155,7 +155,7 @@ class ProjectsApi implements ProjectsApiInterface
     /**
      * Implementation of ProjectsApiInterface#projectsGet
      */
-    public function projectsGet(string $category, string $accept_language = null, string $max_version = null, int $limit = '20', int $offset = '0', string $flavor = null)
+    public function projectsGet(string $category, string $accept_language = null, string $max_version = null, int $limit = '20', int $offset = '0', string $flavor = null, string $program_id = null)
     {
         // Implement the operation ...
     }
@@ -174,6 +174,7 @@ Name | Type | Description  | Notes
  **limit** | **int**|  | [optional] [default to 20]
  **offset** | **int**|  | [optional] [default to 0]
  **flavor** | **string**|  | [optional]
+ **program_id** | **string**|  | [optional]
 
 ### Return type
 
